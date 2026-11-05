@@ -593,11 +593,13 @@
 
         const TOTAL = 212;
 
+        /*
         // LIMPEZA DOS DADOS DO PROJETO ANTERIOR
         localStorage.removeItem("album");
         localStorage.removeItem("inicioAlbum");
         localStorage.removeItem("ultimaFigurinha");
         localStorage.removeItem("albumCompleto");
+        */
 
         let album = new Set(JSON.parse(localStorage.getItem("album")) || []);
         let currentSection = 0;
