@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Álbum Dia dos Pais</title>
+    <link rel="icon" type="image/png" href="favicon_mami.png">
+
+    <link href="https://fonts.googleapis.com/css2?family=Titan+One&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --rosa: #E58BA3;
+            --laranja: #F19A6E;
+            --amarelo: #F2D675;
+            --creme: #F5F3DC;
+            --salmao: #F6B39A;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Shrikhand", cursive;
+        }
+
+        body {
+            background: var(--creme);
+            color: var(--rosa);
+        }
+
+        h1 {
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
+
+        h2 {
+            font-weight: 400;
+            opacity: 0.9;
+        }
+
+        .header h1 {
+            font-size: 2.4rem;
+            letter-spacing: 2px;
+        }
+
+        .header p {
+            font-size: 1.15rem;
+            letter-spacing: 1px;
+            opacity: 0.9;
+        }
+
+        .card h2 {
+            font-size: 1.25rem;
+            letter-spacing: 1px;
+        }
+
+        #sectionTitle {
+            font-size: 17px;
+            opacity: 0.8;
+            text-align: center;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .header {
+            background: var(--rosa);
+            color: var(--creme);
+            text-align: center;
+            padding: 28px;
+        }
+
+        .header {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* faixa verde reta atrás/embaixo */
+        .header::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -10px;
+            /* distância pra ficar “abaixo” */
+            height: 10px;
+            /* espessura da faixa */
+            background: var(--amarelo);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 18px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 22px;
+            padding: 18px;
+            margin-top: 18px;
+            box-shadow: 0 6px 0 var(--laranja);
+        }
+
+        /* INPUT */
+        .input-box {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        input {
+            flex: 1;
+            padding: 16px;
+            font-size: 16px;
+            border-radius: 14px;
+            border: 1px solid var(--laranja);
+            text-align: center;
+        }
+
+        button {
+            padding: 14px 18px;
+            font-size: 15px;
+            border: none;
+            border-radius: 12px;
+            background: var(--amarelo);
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: var(--salmao);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 rgba(0, 0, 0, 0.15);
+        }
+
+        /* NAV */
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        /* TABLE */
+        .table {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 6px;
+        }
+
+        .cell {
+            font-size: 14px;
+            padding: 10px 0;
+            text-align: center;
+            border-radius: 8px;
+            border: 1px solid var(--laranja);
+            background: white;
+            opacity: 0.6;
+            cursor: pointer;
+        }
+
+        .cell.done {
+            background: var(--amarelo);
+            color: white;
+            opacity: 1;
+        }
+
+        /* PROGRESS BAR */
+        .progress {
+            width: 100%;
+            height: 14px;
+            border-radius: 50px;
+            background: rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        #bar {
+            height: 100%;
+            width: 0%;
+            background: var(--amarelo);
+            transition: width 0.3s ease;
+        }
+
+        .info {
+            margin-top: 6px;
+            font-size: 16px;
+        }
+
+        /* RESET BTN */
+        #resetBtn {
+            position: fixed;
+            bottom: 14px;
+            right: 14px;
+
+            width: 46px;
+            height: 46px;
+
+            border-radius: 50%;
+            border: none;
+
+            background: white;
+            cursor: pointer;
+            opacity: .75;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 22px;
+            line-height: 1;
+            padding: 0;
+        }
+
+        /* MODAL */
+        #overlay {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.35);
+        }
+
+        #rewardOverlay {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.35);
+        }
+
+        .modal {
+            background: white;
+            padding: 18px;
+            border-radius: 18px;
+            width: 90%;
+            max-width: 320px;
+        }
+
+        .modal input {
+            width: 100%;
+            margin-top: 10px;
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid var(--laranja);
+        }
+
+        #modalMsg {
+            margin-top: 8px;
+            font-size: 12px;
+            color: red;
+            min-height: 16px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .modal button {
+            flex: 1;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+        }
+
+        .modal {
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+
+            width: 34px;
+            height: 34px;
+
+            padding: 0;
+            border-radius: 50%;
+            border: none;
+
+            background: #eee;
+            color: var(--laranja);
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            cursor: pointer;
+        }
+
+        .close-modal:hover {
+            background: #ddd;
+            transform: none;
+            box-shadow: none;
+        }
+
+
+        /* RECOMPENSA ÁLBUM COMPLETO */
+
+        .reward-modal {
+            background: white;
+            width: 90%;
+            max-width: 360px;
+            padding: 25px;
+            border-radius: 24px;
+            text-align: center;
+            box-shadow: 0 8px 0 var(--laranja);
+
+            animation: aparecer .4s ease;
+        }
+
+        .reward-modal h2 {
+            color: var(--laranja);
+            margin-bottom: 15px;
+        }
+
+        .reward-modal p {
+            margin-top: 12px;
+            line-height: 1.5;
+            font-size: 15px;
+        }
+
+        .reward-modal button {
+            margin-top: 20px;
+            width: 100%;
+            background: var(--salmao);
+        }
+
+        .reward-icon {
+            font-size: 55px;
+            margin-bottom: 10px;
+        }
+
+
+        @keyframes aparecer {
+
+            from {
+                transform: scale(.7);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+        }
+
+
+        .btn-confirm {
+            background: var(--salmao);
+            color: white;
+        }
+
+        .progress-title {
+            margin-bottom: 14px;
+        }
+
+        @media (max-width: 768px) {
+
+            .container {
+                padding: 14px;
+            }
+
+            .card {
+                padding: 16px;
+            }
+
+            .header {
+                padding: 24px;
+            }
+
+            .header h1 {
+                font-size: 2.1rem;
+            }
+
+            .header p {
+                font-size: 0.95rem;
+            }
+
+            .card h2 {
+                font-size: 1.05rem;
+            }
+
+            #sectionTitle {
+                font-size: 14px;
+            }
+
+            .info {
+                font-size: 13px;
+            }
+
+            .cell {
+                font-size: 12px;
+                padding: 7px 0;
+            }
+
+            input {
+                font-size: 14px;
+                padding: 14px;
+            }
+
+            button {
+                font-size: 13px;
+                padding: 12px 14px;
+            }
+
+            .progress {
+                height: 14px;
+            }
+
+            #resetBtn {
+                width: 42px;
+                height: 42px;
+            }
+        }
+
+
+        .progress-info {
+            margin-top: 12px;
+            padding: 12px;
+            background: var(--creme);
+            border-radius: 15px;
+        }
+
+        #motivation {
+            margin-top: 15px;
+            color: var(--salmao);
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>Álbum de Figurinhas</h1>
+        <p>Edição Especial de Aniversário!</p>
+    </div>
+
+    <div class="container">
+
+        <!-- INPUT -->
+        <div class="card">
+            <h2>Adicionar Figurinha</h2>
+
+            <div class="input-box">
+                <input id="input" maxlength="3" placeholder="Digite o n.º"> <button
+                    onclick="add()">Adicionar</button>
+            </div>
+
+            <div id="addMsg" style="margin-top:10px; min-height:20px;"></div>
+        </div>
+
+        <!-- PROGRESS -->
+        <div class="card">
+            <h2 class="progress-title">Progresso</h2>
+
+            <div class="progress">
+                <div id="bar"></div>
+            </div>
+
+            <div class="info" id="count"></div>
+            <div class="info" id="percent"></div>
+
+            <div class="info" id="remaining"></div>
+            <div class="info" id="lastSticker"></div>
+            <div class="info" id="startDate"></div>
+            <div class="info" id="days"></div>
+            <div class="info" id="chapters"></div>
+
+            <div class="info" id="motivation"></div>
+        </div>
+
+        <!-- TABLE -->
+        <div class="card">
+
+            <div class="nav">
+                <button onclick="prevSection()">◀</button>
+                <div id="sectionTitle"></div>
+                <button onclick="nextSection()">▶</button>
+            </div>
+
+            <div id="table"></div>
+
+        </div>
+
+    </div>
+
+    <!-- RESET BTN -->
+    <button id="resetBtn" onclick="openReset()" aria-label="Reiniciar álbum">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#202C60"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="3 6 5 6 21 6" />
+            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+            <path d="M10 11v6" />
+            <path d="M14 11v6" />
+            <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
+        </svg>
+    </button>
+    <!-- MODAL -->
+    <div id="overlay">
+        <div class="modal">
+
+            <button class="close-modal" onclick="closeModal()" aria-label="Fechar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="3" stroke-linecap="round">
+                    <path d="M5 5L19 19" />
+                    <path d="M19 5L5 19" />
+                </svg>
+            </button>
+            <h3>Confirmação</h3>
+
+            <input type="text" id="senha" placeholder="Digite: DANI">
+            <input type="text" id="word">
+
+            <div id="modalMsg"></div>
+
+            <div class="modal-buttons">
+                <button class="btn-confirm" onclick="confirmAction()">Confirmar</button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MODAL DE ÁLBUM COMPLETO -->
+    <div id="rewardOverlay">
+
+        <div class="reward-modal">
+
+            <div class="reward-icon">
+                🏆
+            </div>
+
+            <h2>ÁLBUM COMPLETO!</h2>
+
+            <p>
+                Parabéns! Você conseguiu reunir todas as
+                212 figurinhas!
+            </p>
+
+            <p>
+                Essa coleção representa momentos,
+                histórias e lembranças especiais
+                que agora fazem parte da sua jornada.
+            </p>
+
+            <p>
+                E para celebrar esse grande dia, chegou
+                o momento de descobrir seu presente final!
+                Siga as pistas escondidas ao longo do seu
+                álbum de figurinhas e prepare-se para essa
+                surpresa especial!
+            </p>
+
+            <button onclick="closeReward()">
+                Missão cumprida!
+            </button>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        const TOTAL = 212;
+
+        /*
+       // LIMPEZA DOS DADOS DO ÁLBUM ANTERIOR
+        localStorage.removeItem("inicioAlbum");
+        localStorage.removeItem("ultimaFigurinha");
+        */
+
+        let album = new Set(JSON.parse(localStorage.getItem("album")) || []);
+        let currentSection = 0;
+        let targetRemove = null;
+
+        const sections = [
+            { name: "QR CODE 000", start: 0, end: 0 },
+            { name: "ESPECIAL 001", start: 1, end: 1 },
+            { name: "FAMÍLIA", start: 2, end: 50 },
+
+            { name: "VIAGENS: FOZ NOV/24", start: 51, end: 66 },
+            { name: "VIAGENS: GRAMADO FEV/25", start: 67, end: 83 },
+            { name: "VIAGENS: GRAMADO OUT/25", start: 84, end: 131 },
+            { name: "VIAGENS: FOZ FEV/26", start: 132, end: 141 },
+
+            { name: "MOMENTOS", start: 142, end: 158 },
+            { name: "MAMI", start: 159, end: 190 },
+            { name: "SONHOS", start: 191, end: 209 },
+            { name: "ESPECIAL 210", start: 210, end: 210 },
+            { name: "FIGURINHA MISTERIOSA", start: 211, end: 211, special: true }
+        ];
+
+        function getSection() {
+            return sections[currentSection];
+        }
+
+        function save() {
+            localStorage.setItem("album", JSON.stringify([...album]));
+        }
+
+        function saveStartDate() {
+
+            if (!localStorage.getItem("inicioAlbum")) {
+
+                localStorage.setItem(
+                    "inicioAlbum",
+                    new Date().toISOString()
+                );
+
+            }
+
+        }
+
+
+        function formatDate(date) {
+
+            return date.toLocaleDateString("pt-BR");
+
+        }
+
+
+        function getDays() {
+
+            const start = localStorage.getItem("inicioAlbum");
+
+            if (!start) return 0;
+
+            const inicio = new Date(start);
+            const hoje = new Date();
+
+            const diff = hoje - inicio;
+
+            return Math.floor(diff / (1000 * 60 * 60 * 24));
+
+        }
+
+
+        function getCompleteSections() {
+
+            let complete = 0;
+
+            sections.forEach(section => {
+
+                let total = 0;
+                let done = 0;
+
+
+                for (let i = section.start; i <= section.end; i++) {
+
+                    total++;
+
+                    if (album.has(i)) {
+                        done++;
+                    }
+
+                }
+
+
+                if (total === done) {
+                    complete++;
+                }
+
+
+            });
+
+
+            return complete;
+
+        }
+
+
+        function getMotivation(percent) {
+
+            if (percent === 100)
+                return "🏆 Álbum completo! Uma coleção cheia de histórias.";
+
+            if (percent >= 75)
+                return "🔥 Está quase lá! Faltam poucas figurinhas.";
+
+            if (percent >= 50)
+                return "🚀 Você já passou da metade da jornada.";
+
+            if (percent >= 25)
+                return "⭐ Sua coleção está começando a ganhar vida.";
+
+            return "🌱 Toda grande coleção começa com a primeira figurinha.";
+
+        }
+
+        function verificarConclusao() {
+
+            let todasAdicionadas = true;
+
+            for (let i = 0; i < TOTAL; i++) {
+
+                if (!album.has(i)) {
+                    todasAdicionadas = false;
+                    break;
+                }
+
+            }
+
+            if (todasAdicionadas) {
+
+                if (localStorage.getItem("albumCompleto") !== "true") {
+
+                    localStorage.setItem("albumCompleto", "true");
+
+                    document.getElementById("rewardOverlay")
+                        .style.display = "flex";
+
+                }
+
+            }
+
+        }
+
+        function closeReward() {
+
+            document.getElementById("rewardOverlay")
+                .style.display = "none";
+
+        }
+
+        /* ADD */
+        function add() {
+
+            const input = document.getElementById("input");
+            const msg = document.getElementById("addMsg");
+
+            const valor = input.value.trim();
+
+            msg.innerText = "";
+
+            let n;
+
+            if (valor === "?") {
+                n = 211;
+            } else {
+                n = parseInt(valor, 10);
+
+                if (
+                    isNaN(n) ||
+                    !/^\d{1,3}$/.test(valor) ||
+                    n < 0 ||
+                    n > 210
+                ) {
+                    msg.style.color = "#d62828";
+                    msg.innerText = "Informe um número entre 000 e 210 ou ?.";
+                    return;
+                }
+            }
+
+            const identificacao = n === 211 ? "?" : String(n).padStart(3, "0");
+
+            if (album.has(n)) {
+                msg.style.color = "#e6a700";
+                msg.innerText = `Figurinha ${identificacao} já está cadastrada na sua coleção.`
+                input.value = "";
+                return;
+            }
+
+            album.add(n);
+
+            saveStartDate();
+
+            localStorage.setItem(
+                "ultimaFigurinha",
+                identificacao
+            );
+
+            msg.style.color = "#2a9d42";
+            msg.innerText = `Figurinha ${identificacao} cadastrada com sucesso!`
+
+            save();
+            update();
+
+            verificarConclusao();
+
+            input.value = "";
+        }
+
+        /* RESET BUTTON */
+        function openReset() {
+            targetRemove = "reset";
+
+            document.getElementById("word").placeholder = "Digite: REINICIAR";
+            document.getElementById("overlay").style.display = "flex";
+
+            document.getElementById("senha").value = "";
+            document.getElementById("word").value = "";
+            document.getElementById("modalMsg").innerText = "";
+        }
+
+        /* MODAL */
+        function closeModal() {
+            document.getElementById("overlay").style.display = "none";
+            document.getElementById("senha").value = "";
+            document.getElementById("word").value = "";
+            document.getElementById("modalMsg").innerText = "";
+            targetRemove = null;
+        }
+
+        function confirmAction() {
+
+            const senha = document.getElementById("senha").value.trim().toUpperCase();
+            const word = document.getElementById("word").value.trim().toUpperCase();
+            const msg = document.getElementById("modalMsg");
+
+            msg.innerText = "";
+
+            /* RESET */
+            if (targetRemove === "reset") {
+
+                if (senha !== "DANI") {
+                    msg.innerText = "Senha incorreta.";
+                    return;
+                }
+
+                if (word !== "REINICIAR") {
+                    msg.innerText = "Digite REINICIAR para confirmar.";
+                    return;
+                }
+
+                album.clear();
+                localStorage.removeItem("albumCompleto");
+                localStorage.removeItem("ultimaFigurinha");
+                localStorage.removeItem("inicioAlbum");
+            }
+
+            /* REMOVER FIGURINHA */
+            if (typeof targetRemove === "number") {
+
+                if (senha !== "DANI") {
+                    msg.innerText = "Senha de remoção incorreta.";
+                    return;
+                }
+
+                if (word !== "REMOVER") {
+                    msg.innerText = "Digite REMOVER para confirmar.";
+                    return;
+                }
+
+                album.delete(targetRemove);
+            }
+
+            save();
+            update();
+            closeModal();
+        }
+
+        /* NAV */
+        function nextSection() {
+            if (currentSection < sections.length - 1) {
+                currentSection++;
+                update();
+            }
+        }
+
+        function prevSection() {
+            if (currentSection > 0) {
+                currentSection--;
+                update();
+            }
+        }
+
+        /* PROGRESS */
+        function update() {
+
+            const percent = Math.round((album.size / TOTAL) * 100);
+
+            const remaining = TOTAL - album.size;
+
+            document.getElementById("count").innerText =
+                `📖 Figurinhas coletadas: ${album.size} / ${TOTAL}`;
+
+
+            document.getElementById("percent").innerText =
+                `📊 Progresso: ${percent}%`;
+
+
+            document.getElementById("remaining").innerText =
+                remaining > 0
+                    ? `⏳ Faltam ${remaining} figurinhas`
+                    : `🏆 Nenhuma figurinha faltando!`;
+
+
+            const last = localStorage.getItem("ultimaFigurinha");
+
+            document.getElementById("lastSticker").innerText =
+                last
+                    ? `⭐ Última adicionada: ${last}`
+                    : `⭐ Nenhuma figurinha adicionada ainda`;
+
+
+            const start = localStorage.getItem("inicioAlbum");
+
+            document.getElementById("startDate").innerText =
+                start
+                    ? `📅 Coleção iniciada em: ${formatDate(new Date(start))}`
+                    : "";
+
+
+            document.getElementById("days").innerText =
+                `🕒 Dias colecionando: ${getDays()}`;
+
+
+            document.getElementById("chapters").innerText =
+                `📚 Capítulos completos: ${getCompleteSections()} / ${sections.length}`;
+
+
+            document.getElementById("motivation").innerText =
+                getMotivation(percent);
+
+
+            document.getElementById("bar").style.width =
+                percent + "%";
+
+
+            render();
+            updateSectionProgress();
+
+        }
+
+        /* TABLE */
+        function render() {
+
+            const el = document.getElementById("table");
+            el.innerHTML = "";
+
+            const section = getSection();
+            const title = section.name;
+            const start = section.start;
+            const end = section.end;
+
+            const grid = document.createElement("div");
+            grid.className = "table";
+
+            for (let i = start; i <= end; i++) {
+
+                const cell = document.createElement("div");
+                cell.className = "cell";
+
+                if (album.has(i)) cell.classList.add("done");
+
+                cell.innerText = i === 211 ? "?" : String(i).padStart(3, "0");
+
+                cell.onclick = () => {
+                    if (album.has(i)) {
+                        targetRemove = i;
+
+                        document.getElementById("word").placeholder =
+                            "Digite: REMOVER";
+
+                        document.getElementById("overlay").style.display = "flex";
+                    }
+                };
+
+                grid.appendChild(cell);
+            }
+
+            el.appendChild(grid);
+        }
+
+        update();
+
+        verificarConclusao();
+
+        function updateSectionProgress() {
+            const section = getSection();
+            const title = section.name;
+            const start = section.start;
+            const end = section.end;
+
+            let total = 0;
+            let done = 0;
+
+            for (let i = start; i <= end; i++) {
+                total++;
+                if (album.has(i)) done++;
+            }
+
+            document.getElementById("sectionTitle").innerText =
+                `${title} (${done}/${total})`;
+        }
+
+        document.getElementById("input").addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+                add();
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>
